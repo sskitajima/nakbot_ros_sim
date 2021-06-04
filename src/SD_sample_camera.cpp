@@ -6,6 +6,8 @@
 
 #include <opencv2/highgui/highgui.hpp>
 
+int num_subscribed_image=0;
+
 // 画像トピックを受けたときに実行されるコールバック関数
 void camera_callback(const sensor_msgs::ImageConstPtr& img_msg)
 {
@@ -23,6 +25,9 @@ void camera_callback(const sensor_msgs::ImageConstPtr& img_msg)
     // 例:トピックがモノクロ画像だったときなど
     ROS_ERROR("Could not convert from '%s' to 'bgr8'.", img_msg->encoding.c_str());
   }
+
+  num_subscribed_image++;
+  ROS_INFO("subscribe image %d", num_subscribed_image);
 }
 
 

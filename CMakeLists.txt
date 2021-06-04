@@ -23,7 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(OpenCV REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -144,7 +144,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/nakbot_ros_sim_node.cpp)
 add_executable(nakbot_ros_sim_talker   src/talker.cpp)
 add_executable(nakbot_ros_sim_listener src/listener.cpp)
-add_executable(sample_listener_node    src/SD_sample_laser.cpp)
+add_executable(sample_laser_node    src/SD_sample_laser.cpp)
 add_executable(sample_camera_node      src/SD_sample_camera.cpp)
 
 ## Rename C++ executable without prefix
@@ -161,10 +161,22 @@ add_executable(sample_camera_node      src/SD_sample_camera.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(nakbot_ros_sim_talker  ${catkin_LIBRARIES})
-target_link_libraries(nakbot_ros_sim_listener  ${catkin_LIBRARIES})
-target_link_libraries(sample_listener_node  ${catkin_LIBRARIES})
-target_link_libraries(sample_camera_node  ${catkin_LIBRARIES})
+target_link_libraries(nakbot_ros_sim_talker
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(nakbot_ros_sim_listener
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sample_laser_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sample_camera_node
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
 
 
 #############

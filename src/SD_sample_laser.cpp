@@ -80,7 +80,7 @@ public:
       // latest_scan.ranges[10]　→　0deg
       // latest_scan.ranges[20] →　10deg
 
-      if (center_value < 0.5) // 障害物と近いので、回転させる
+      if (center_value < 1.0) // 障害物と近いので、回転させる
       {
         cmd_msg = create_vel_msg(0.0, 0.5);
         pub_vel.publish(cmd_msg);
