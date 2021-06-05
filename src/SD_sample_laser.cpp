@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <ros/ros.h>
-#include <sensor_msgs/LaserScan.h> // scan 
+#include <sensor_msgs/LaserScan.h> // scan
 #include <geometry_msgs/Twist.h>   // velocity
 
 // クラスLaserSampleNodeの定義
@@ -24,6 +24,8 @@ private:
 
   // メッセージの初回受信を確認する変数
   bool is_recieved_scan = false;
+
+  const double laser_thres = 1.0;
 
 public:
   LaserSampleNode()
@@ -69,7 +71,8 @@ public:
       }
 
       // 値を取得しないままlatest_scan変数にアクセスするとエラーを起こすので判定
-      if(!is_recieved_scan) continue;
+      if (!is_recieved_scan)
+        continue;
 
       // 複数あるセンサの値のうち、中央にある値を取得する
       // http://docs.ros.org/en/api/sensor_msgs/html/msg/LaserScan.html
@@ -80,22 +83,28 @@ public:
       // latest_scan.ranges[10]　→　0deg
       // latest_scan.ranges[20] →　10deg
 
-      if (center_value < 1.0) // 障害物と近いので、回転させる
+      double min_distance = 99999;
+      for (int i = 0; i < latest_scan.ranges.size(); i++)
       {
-        cmd_msg = create_vel_msg(0.0, 0.5);
-        pub_vel.publish(cmd_msg);
+        double value = latest_scan.ranges[i];
+        if (value < min_distance)
+        {
+          min_distance = value;
+        }
+      }
 
+      if (min_distance < laser_thres)
+      {
+        cmd_msg = create_vel_msg(0, 0.3);
+        cnt++;
+      }
+      else
+      {
+        cmd_msg = create_vel_msg(0.5, 0);
         cnt=0;
-
-        ROS_INFO("center laser value %5f : rotate", center_value);
       }
-      else    // 障害物と距離があるので、直進させる
-      {
-        cmd_msg = create_vel_msg(0.3, 0.0);
-        pub_vel.publish(cmd_msg);
-
-        ROS_INFO("center laser value %8f : move on", center_value);
-      }
+      pub_vel.publish(cmd_msg);
+      ROS_INFO("publish cmd_vel. linear velocity: %.2f, angular velocity: %.2f", cmd_msg.linear.x, cmd_msg.angular.z);
 
       // 指定したループ周期になるように調整
       r.sleep();
