@@ -4,12 +4,10 @@
 
   <xacro:property name="M_PI" value="3.14159274"/>
 
-  <!-- <xacro:include filename="$(find my_robo_description)/urdf/imu.urdf.xacro" /> -->
-  <!-- <xacro:imu_macro parent="base_link" prefix="imu" xyz="0 0 0" /> -->
-  <xacro:include filename="$(find my_robo_description)/urdf/color.urdf.xacro" />
-  <!-- <xacro:include filename="$(find my_robo_description)/urdf/my_robo_gazebo.urdf.xacro" /> -->
-  <xacro:include filename="$(find my_robo_description)/urdf/my_robo_laser.urdf.xacro" />
-  <xacro:include filename="$(find my_robo_description)/urdf/my_robo_camera.urdf.xacro" />
+  <xacro:include filename="$(find nakbot_ros_sim)/urdf/imu.urdf.xacro" />
+  <xacro:include filename="$(find nakbot_ros_sim)/urdf/color.urdf.xacro" />
+  <xacro:include filename="$(find nakbot_ros_sim)/urdf/my_robo_laser.urdf.xacro" />
+  <xacro:include filename="$(find nakbot_ros_sim)/urdf/my_robo_camera.urdf.xacro" />
 
 
   <!-- link -->
