@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+  <!-- arguments -->
   <arg name="X" default="0"/>
   <arg name="Y" default="0"/>
   <arg name="yaw" default="0"/>
   <arg name="model" default="$(find nakbot_ros_sim)/urdf/my_robo.xacro"/> 
   <arg name="world" default="worlds/empty.world"/>
 
+  <!-- parameter -->
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) --inorder"/> 
 
   <!-- launch differential_drive_controller -->
@@ -23,7 +25,7 @@
         <arg name="model" value="$(arg model)"/>
     </include>
 
-  <!-- launch teleoperation node with keybord -->
+  <!-- launch teleoperation node with keyboard -->
   <node name="teleop_twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
 
 </launch>
