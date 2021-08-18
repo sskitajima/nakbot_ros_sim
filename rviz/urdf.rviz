@@ -5,6 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /RobotModel1
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 726
@@ -52,7 +54,7 @@ Visualization Manager:
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
       Value: true
-    - Alpha: 1
+    - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
       Enabled: true
@@ -62,11 +64,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        back_caster:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         base_footprint:
           Alpha: 1
           Show Axes: false
@@ -76,34 +73,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_caster:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        laser:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         left_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        openni_camera:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         right_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -120,23 +94,11 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        back_caster:
-          Value: true
         base_footprint:
           Value: true
         base_link:
           Value: true
-        camera_link:
-          Value: true
-        front_caster:
-          Value: true
-        laser:
-          Value: true
-        laser_link:
-          Value: true
         left_wheel_link:
-          Value: true
-        openni_camera:
           Value: true
         right_wheel_link:
           Value: true
@@ -148,16 +110,6 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            back_caster:
-              {}
-            camera_link:
-              openni_camera:
-                {}
-            front_caster:
-              {}
-            laser_link:
-              laser:
-                {}
             left_wheel_link:
               {}
             right_wheel_link:
@@ -260,25 +212,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.783062696456909
+      Distance: 0.6820753812789917
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.08553577959537506
-        Y: 0.07248862832784653
-        Z: 0.2603185176849365
+        X: 0.10926651954650879
+        Y: -0.00571763701736927
+        Z: 0.10951121896505356
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.45539698004722595
+      Pitch: 0.005396870896220207
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.088527798652649
+      Yaw: 5.631698131561279
     Saved: ~
 Window Geometry:
   Displays:

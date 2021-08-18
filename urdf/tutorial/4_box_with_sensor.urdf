@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="tutorial_robot">
+
+  <link name="base_footprint"/>
+
+
+  <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child  link="base_link"/>
+
+      <origin xyz="0 0 0.06"/>
+  </joint>
+
+
+  <link name="base_link">
+    <visual>
+        <geometry>
+            <box size="0.3 0.2 0.1"/>
+        </geometry>
+
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+
+        <material name="Cyan">
+           <color rgba="0 1.0 1.0 1.0"/>
+        </material>
+
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="0.3 0.2 0.1"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    
+  </link>
+
+
+
+
+
+<!-- wheel -->
+  <joint name="right_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child  link="right_wheel_link"/>
+
+      <origin xyz="0 0.12 0" rpy="1.5707 0 0 "/>
+  </joint>
+
+
+  <link name="right_wheel_link">
+    <visual>
+        <geometry>
+            <cylinder radius="0.06" length="0.04"/>
+        </geometry>
+
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+
+        <material name="Red">
+           <color rgba="1.0 0 0 1.0"/>
+        </material>
+
+    </visual>
+
+
+    <collision>
+        <geometry>
+            <cylinder radius="0.06" length="0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    
+  </link>
+
+
+  <joint name="left_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child  link="left_wheel_link"/>
+
+      <origin xyz="0 -0.12 0" rpy="-1.5707 0 0 "/>
+  </joint>
+
+
+  <link name="left_wheel_link">
+    <visual>
+        <geometry>
+            <cylinder radius="0.06" length="0.04"/>
+        </geometry>
+
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+
+        <material name="Red">
+           <color rgba="1.0 0 0 1.0"/>
+        </material>
+
+    </visual>
+
+    <collision>
+        <geometry>
+            <cylinder radius="0.06" length="0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+  
+  </link> 
+
+
+<!-- sensor -->
+  <joint name="camera_base_joint" type="fixed">
+      <parent link="base_link"/>
+      <child  link="camera_base_link"/>
+
+        <!-- transform from base_joint  -->
+      <origin xyz="0.1 0 0.07" rpy="0 0 0 "/>
+  </joint>
+
+
+  <link name="camera_base_link">
+    <visual>
+        <geometry>
+            <box size="0.06 0.06 0.06"/>
+        </geometry>
+
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="0.06 0.06 0.06"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+  
+  </link> 
+
+
+  <joint name="camera_joint" type="fixed">
+      <parent link="camera_base_link"/>
+      <child  link="camera"/>
+
+      <origin xyz="0.03 0 0" rpy="0 0 0 "/>
+  </joint>
+
+
+  <link name="camera"/>
+
+</robot>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <arg name="topic_name" default="/camera/rgb/image_color"/>
+    <arg name="path_to_save_image" default="$(find nakbot_ros_sim)/saved_image.png"/>
+
+  <!-- load the controllers -->
+  <node name="image_subscriber" pkg="nakbot_ros_sim" type="image_subscriber" output="image_subscriber">
+        <param name="topic_name" value="$(arg topic_name)"/>
+        <param name="path_to_save_image" value="$(arg path_to_save_image)"/>
+  </node>
+
+</launch>
