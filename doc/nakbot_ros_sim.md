@@ -140,25 +140,98 @@ roslaunch nakbot_ros_sim simple_gazebo.launch world_name:=[world_file_path]
 
 urdfファイルはxmlを拡張した形式で記述する。ロボットを「link」と「joint」ごとに分け、それらを交互につなげることでモデルを表現する。
 
+一般的なxml形式について補足すると、xml形式は木構造（あるタグの中にタグを記述した入れ込んだ構造）にすることができる。また、`<`や`/>`など、タグの閉じ方のミスによってエラーを起こす初心者が多いので、なれないうちは特に注意すると良い。
+
 #### 基本
 
-`1_simple_box.urdf`
+単純な箱型のオブジェクトを表示させるurdfファイル
+
+[1_simple_box.urdf](../urdf/tutorial/1_simple_box.urdf)
+
+それぞれの要素についての説明は、[urdfフォーマットに関する仕様](http://wiki.ros.org/urdf/XML)に詳しく記載されている。サンプルやネット上のものを中心に、登場するものからどんなものがあるか覚えていくとよい。今回用いている要素についての説明は3-3に示している。
+
+
+
+udfファイルがきちんとしたフォーマット（木構造）になっているかどうかをチェックするには、以下のコマンドを用いる。コマンドがない場合はインストールする。
 
 ```bash
-check_urdf 1_box.urdf
+check_urdf 1_box.urdf`
+```
+
+urdf上で表示させてみるには、`urdf_tutorial`パッケージにちょうどよいlaunchファイルがあるのでそれを利用する。パッケージをインストールしていない場合はインストールするか、このリポジトリにあるほぼ同様のものを用いる。
+
+```bash
+roslaunch urdf_tutorial display.launch model:=1_box.urdf
+
+# 本リポジトリにあるほぼ同じ起動コマンド
+roslaunch nakbot_ros_sim display.launch model:=1_box.urdf
 ```
 
 
 
 #### 情報を追加する
 
-`2_box.urdf`
+基本的な箱型のオブジェクトに、もう少し要素を追加してみる。
 
-```bash
-roslaunch urdf_tutorial display.launch model:=1_box.urdf
+[2_box.urdf](../urdf/tutorial/2_box.urdf)
+
+衝突に関する属性、urdf上での表示色に関する設定が追加されている。
+
+rvizの「Collision Enabled」のチェックを入れると、衝突を判定する領域の表示ができる。
+
+
+
+
+
+#### 車輪を追加してみる
+
+移動ロボットらしくするために、車輪を追加してみる。
+
+[3_box_with_wheel.urdf](../urdf/tutorial/3_box_with_wheel.urdf)
+
+`<link>`が複数になり、`<joint>`要素が追加されている。jointはlink同士をつなぐ役割をもち、2つのlinkが固定されているのか、ある可動域で動くのかどうかを定義する。
+
+```xml
+<!-- 自由に動けるjointの例 -->
+<joint name="right_wheel_joint" type="continuous">`
+    <!-- ~いろいろな定義~ -->
+</joint>
+
+<!-- 固定されたjointの例 -->
+ <joint name="base_joint" type="fixed">
+    <!-- ~いろいろな定義~ -->
+ </joint>
 ```
 
+rvizの設定でtfを表示させるようにすると、構造を可視化することができる。rvizのメニューからvisual要素などを半透明にすることで、内部の様子まで確認することができる。
 
+
+
+#### センサを追加してみる
+
+Gazeboでセンサからの入力を取得したいので、センサの部分を追加する。
+
+[4_box_with_sensor.urdf](../urdf/tutorial/4_box_with_sensor.urdf)
+
+このあたりから構造が複雑になってくるので、予め紙に書いたり他のツールを用いたりするなどして幾何関係を整理してから記述する必要が出てくるだろう。
+
+
+
+### 3-2 Gazeboで必要な追加要素
+
+gazeboでシミュレーションを行うためには、これまでの記述に加えて、シミュレーションに必要な情報を定義する必要がある。
+
+[5_simple_robot.urdf](../urdf/tutorial/5_simple_robot.urdf)
+
+linkの定義の中に`<inertia>`要素が加わり、linkとjointの定義の後に`<gazebo>`要素が加わっている。`<gazebo>`はそれまでに定義されたurdfのlink要素を参照する形で定義する。ここではカメラに関するlinkのみ参照しているが、各linkごとに`<gazebo>`要素を追加し、摩擦係数などを設定することができる。詳細は[Gazebo公式: Gazeboシミュレーションで必要なurdf要素について](http://gazebosim.org/tutorials/?tut=ros_urdf)を参照。
+
+
+
+なお、車輪をGazebo上で動かせるようにするためには、ここで記述したものに加えて、車輪を構成する`<joiint>`要素に対してさらなる記述をする必要がある。記述例に関しては、本リポジトリの`my_robo.xacro`にある`differential_drive_controller`に関する部分を参照してほしい。
+
+
+
+Gazebo上でurdfで記述したロボットを動かすためのlaunchファイルを用意してあるので、以下のようにして起動する。
 
 ```bash
 roslaunch nakbot_ros_sim gazebo.launch model:=[urdf_file_path]
@@ -166,34 +239,40 @@ roslaunch nakbot_ros_sim gazebo.launch model:=[urdf_file_path]
 
 
 
-#### 車輪を追加してみる
+### 3-3 今回用いたurdf要素
 
-`3_box_with_wheel.urdf`
-
-rvizの「Collision Enabled」のチェックを入れると、衝突を判定する領域の表示ができる。
-
-
-
-#### センサを追加してみる
-
-`4_box_with_sensor.urdf`
-
-
-
-
-
-### 3-2 Gazeboで必要な追加要素
-
-`5_simple_robot.urdf`
-
-
+- `<robot>`...ロボット全体の定義
+  - `<link>`...リンクの定義
+    - `<visual>`...見える部分についての定義。後述するように、衝突判定を計算する境界とは異なる。
+      - `<geometry>`...幾何情報の記述。ここでは箱を定義しているが、球や円柱などのオブジェクトを使うこともできる。
+      - `<origin>`...基準となる座標からの座標変換
+      - `<material>`...visual属性のマテリアルについての設定
+    - `<collision>`...衝突判定を計算する部分についての定義。urdfの記述においては必須ではないが、gazeboでシミュレーションを行う上では必須である。
+      - `<geometry>`
+      - `<origin>`
+    - `<inertial>`...物理シミュレーションを行うため、運動に関する情報を定義する。Gazeboでシミュレーションを行う際に必須になる。
+      - `<origin>`
+      - `<mass>`...質量[kg]
+      - `<inertia>`...慣性モーメント[kg*m^2]
+  - `<joint>`...ジョイントの定義
+    - `<parent>`...親（urdfの木構造のトップに近いほう）のリンクの名前
+    - `<child>`...子のリンクの名前
+    - `<origin>`...親のリンクの原点からこのjointまでの座標変換
 
 
 
-### 3-3 その他
+
+
+
+
+### 3-4 その他
 
 - ここでは紹介しなかったが、[GazeboのModel Editor](http://gazebosim.org/tutorials?tut=model_editor&cat=model_editor_top)を用いてモデルを作成する方法もある。
 - ロボットが複雑になってくると、簡単な計算をファイル中に埋め込みたい(定数を定義して数値の書き換えを最小限にしたい)、似たような記述（右の車輪と左の車輪など）を減らしたい、複数ファイルに分散させてモデルの管理を楽にしたい、といった要求が出てくる。urdfを拡張してマクロに対応したxacro形式では、これらに対応することができる。`nakbot_ros_sim`パッケージの`my_robo.xacro`では、この機能を利用してモデルが書かれている。
+
+
+
+
 
 
 
@@ -201,7 +280,7 @@ rvizの「Collision Enabled」のチェックを入れると、衝突を判定�
 
 Gazebo上でシミュレートされたものを取得するといっても、特別必要なことがあるわけではなく、通常のトピック通信と同じようにデータをやりとりすることができる。つまり、[第1回のチュートリアル](https://github.com/sskitajima/ros_tutorial)で画像データをサブスクライブするノードと同じ処理で、画像を受け取ることができる。
 
-第1回の復習も兼ねて、前回作成したコードとほぼ同じで、トピック名、保存するパスをroslaunchの引数タグを用いて記述するようにしたものを用意している。
+第1回の復習も兼ねて、前回作成したコードと同じ構造で、subscribeした画像をその場で表示させるようにしたプログラムを用意している。ただし、第1回はトピック名をコードに直接記述したが、今回はroslaunchの引数タグを用いて記述するようにしている。
 
 ```bash
 roslaunch nakbot_ros_sim image_subscriber.launch
@@ -219,6 +298,7 @@ roslaunch nakbot_ros_sim image_subscriber.launch
 - [Gazebo公式HPのチュートリアル](http://gazebosim.org/tutorials)
   - 様々な情報がリンクされているので、必要なページを参照するとよい。
 - [Gazebo公式: roslaunch](http://gazebosim.org/tutorials?tut=ros_roslaunch&cat=connect_ros)
+- [Gazebo公式: Gazeboシミュレーションで必要なurdf要素について](http://gazebosim.org/tutorials/?tut=ros_urdf)
 - [ROS公式のurdfに関するチュートリアル](http://wiki.ros.org/ja/urdf/Tutorials)
 - [urdfフォーマットに関する仕様](http://wiki.ros.org/urdf/XML)
 - [ROS公式: xacro](http://wiki.ros.org/xacro)

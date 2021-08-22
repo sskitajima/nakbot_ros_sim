@@ -147,7 +147,7 @@ add_executable(nakbot_ros_sim_listener src/listener.cpp)
 add_executable(sample_laser_node    src/SD_sample_laser.cpp)
 add_executable(sample_camera_node      src/SD_sample_camera.cpp)
 
-add_executable(image_sucscriber src/tutorial/image_subscriber.cpp)
+add_executable(nakbot_ros_sim_image_subscriber src/tutorial/image_subscriber.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -180,7 +180,7 @@ target_link_libraries(sample_camera_node
   ${OpenCV_LIBRARIES}
 )
 
-target_link_libraries(image_subscriber
+target_link_libraries(nakbot_ros_sim_image_subscriber
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
 )
